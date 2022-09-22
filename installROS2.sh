@@ -84,14 +84,22 @@ git clone --branch yaml-cpp-0.6.0 https://github.com/jbeder/yaml-cpp yaml-cpp-0.
 
 
 # https://answers.ros.org/question/325245/minimal-ros2-installation/?answer=325249#post-id-325249
-sudo mkdir -p ${ROS_BUILD_ROOT}/src && \
+##sudo 
+mkdir -p ${ROS_BUILD_ROOT}/src && \
   cd ${ROS_BUILD_ROOT}
-sudo sh -c "rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PKG} launch_xml launch_yaml example_interfaces > ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
+##sudo 
+sh -c "rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PKG} rostopic rqt rqt_common_plugins rqt_graph pcl-ros lua catkin gazebo-config  turtlebot3-fake-node turtlebot3-fake-node-dbgsym \
+	turtlebot3_simulations turtlebot3-gazebo-dbgsym  turtlebot3 turtlebot3-bringup turtlebot3-cartographer turtlebot3-description \
+	turtlebot3-example turtlebot3-msgs turtlebot3-msgs-dbgsym turtlebot3-navigation2 turtlebot3-node turtlebot3-node-dbgsym \
+	turtlebot3-teleop navigation2 nav2_bringup gazebo_ros_pkgs rviz2 ompl angles behaviortree_cpp_v3 launch_xml \
+	launch_yaml example_interfaces > ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
+	
 cat ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
     vcs import src < ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall"
 
 # download unreleased packages     
-sudo sh -c "git clone --branch ros2 https://github.com/Kukanani/vision_msgs ${ROS_BUILD_ROOT}/src/vision_msgs && \
+#sudo 
+sh -c "git clone --branch ros2 https://github.com/Kukanani/vision_msgs ${ROS_BUILD_ROOT}/src/vision_msgs && \
     git clone --branch ${ROS_DISTRO} https://github.com/ros2/demos demos && \
     cp -r demos/demo_nodes_cpp ${ROS_BUILD_ROOT}/src && \
     cp -r demos/demo_nodes_py ${ROS_BUILD_ROOT}/src && \
@@ -106,15 +114,18 @@ sudo rosdep init
     sudo rm -rf /var/lib/apt/lists/*
 
 # build it!
-sudo mkdir -p ${ROS_INSTALL_ROOT}
+#sudo
+mkdir -p ${ROS_INSTALL_ROOT}
 # sudo required to write build logs
-sudo colcon build --merge-install --install-base ${ROS_INSTALL_ROOT}
+#sudo 
+colcon build --merge-install --install-base ${ROS_INSTALL_ROOT}
 # We do this twice to make sure everything gets built
 # For some reason, this has been an issue
-sudo colcon build --merge-install --install-base ${ROS_INSTALL_ROOT}
+#sudo 
+colcon build --merge-install --install-base ${ROS_INSTALL_ROOT}
 
 # Using " expands environment variable immediately
-echo "source $ROS_INSTALL_ROOT/setup.bash" >> ~/.bashrc 
+echo "source $ROS_INSTALL_ROOT/setup.sh" >> ~/.bashrc 
 echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc
 echo "export _colcon_cd_root=~/ros2_install" >> ~/.bashrc
 
